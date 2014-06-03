@@ -4,6 +4,12 @@ An implementation of Flappy Bird in Swift for iOS 8.
 
 ![FlappySwift](http://i.imgur.com/1NLoToU.gif)
 
+# Notes
+
+We're launching a course [Game Programming with Swift](https://fullstackedu.com) - _Put in your email if you'd like early access_
+
 # Authors
 
-Nate Murray <nate@fullstack.io>
+- Nate Murray <nate@fullstack.io>
+- Based on code by [Matthias Gall](http://digitalbreed.com/2014/how-to-build-a-game-like-flappy-bird-with-xcode-and-sprite-kit)
+
