@@ -11,5 +11,6 @@ We're launching a course [Game Programming with Swift](https://fullstackedu.com)
 # Authors
 
 - Nate Murray <nate@fullstack.io>
+- Ari Lerner <ari@fullstack.io>
 - Based on code by [Matthias Gall](http://digitalbreed.com/2014/how-to-build-a-game-like-flappy-bird-with-xcode-and-sprite-kit)
 
