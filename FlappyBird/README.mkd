@@ -1,0 +1,8 @@
+# FlappySwift
+
+An implementation of Flappy Bird in Swift for iOS 8.
+
+
+# Authors
+
+Nate Murray <nate@fullstack.io>

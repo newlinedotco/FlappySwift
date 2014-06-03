@@ -32,7 +32,6 @@ class GameScene: SKScene {
         var resetGroundSprite = SKAction.moveByX(groundTexture.size().width * 2.0, y: 0, duration: 0.0)
         var moveGroundSpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveGroundSprite,resetGroundSprite]))
         
-        
         for var i = 0; Float(i) < 2.0 + self.frame.size.width / ( groundTexture.size().width * 2.0 ); ++i {
             var sprite = SKSpriteNode(texture: groundTexture)
             sprite.setScale(2.0)
@@ -130,10 +129,6 @@ class GameScene: SKScene {
         pipePair.addChild(pipeUp)
         
         pipePair.runAction(movePipesAndRemove);
-
-        // var movePipes = SKAction.repeatActionForever(SKAction.moveByX(-1, y: 0, duration: 0.02))
-        //  pipePair.runAction(movePipes)
-        
         self.addChild(pipePair)
     }
     
