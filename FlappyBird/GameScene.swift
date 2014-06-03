@@ -32,7 +32,7 @@ class GameScene: SKScene {
         var resetGroundSprite = SKAction.moveByX(groundTexture.size().width * 2.0, y: 0, duration: 0.0)
         var moveGroundSpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveGroundSprite,resetGroundSprite]))
         
-        for var i = 0; Float(i) < 2.0 + self.frame.size.width / ( groundTexture.size().width * 2.0 ); ++i {
+        for var i = 0; Float(i) < 2.0 + Float(self.frame.size.width / ( groundTexture.size().width * 2.0 )); ++i {
             var sprite = SKSpriteNode(texture: groundTexture)
             sprite.setScale(2.0)
             sprite.position = CGPointMake(CGFloat(i) * sprite.size.width, sprite.size.height / 2.0)
@@ -48,7 +48,7 @@ class GameScene: SKScene {
         var resetSkySprite = SKAction.moveByX(skyTexture.size().width * 2.0, y: 0, duration: 0.0)
         var moveSkySpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveSkySprite,resetSkySprite]))
         
-        for var i = 0; Float(i) < 2.0 + self.frame.size.width / ( skyTexture.size().width * 2.0 ); ++i {
+        for var i = 0; Float(i) < 2.0 + Float(self.frame.size.width / ( skyTexture.size().width * 2.0 )); ++i {
             var sprite = SKSpriteNode(texture: skyTexture)
             sprite.setScale(2.0)
             sprite.zPosition = -20;
@@ -64,7 +64,7 @@ class GameScene: SKScene {
         pipeTextureDown.filteringMode = SKTextureFilteringMode.Nearest
 
         // create the pipes movement actions
-        var distanceToMove = Float(self.frame.size.width + 2.0 * pipeTextureUp.size().width);
+        var distanceToMove = CGFloat(self.frame.size.width + 2.0 * pipeTextureUp.size().width);
         var movePipes = SKAction.moveByX(-distanceToMove, y:0.0, duration:NSTimeInterval(0.01 * distanceToMove));
         var removePipes = SKAction.removeFromParent();
         movePipesAndRemove = SKAction.sequence([movePipes, removePipes]);
@@ -117,7 +117,7 @@ class GameScene: SKScene {
         
         var pipeDown = SKSpriteNode(texture: pipeTextureDown)
         pipeDown.setScale(2.0)
-        pipeDown.position = CGPointMake(0.0, Float(y) + Float(pipeDown.size.height) + Float(verticalPipeGap))
+        pipeDown.position = CGPointMake(0.0, CGFloat(Float(y) + Float(pipeDown.size.height) + Float(verticalPipeGap)))
 
         
         pipeDown.physicsBody = SKPhysicsBody(rectangleOfSize: pipeDown.size)
@@ -126,7 +126,7 @@ class GameScene: SKScene {
         
         var pipeUp = SKSpriteNode(texture: pipeTextureUp)
         pipeUp.setScale(2.0)
-        pipeUp.position = CGPointMake(0.0, Float(y))
+        pipeUp.position = CGPointMake(0.0, CGFloat(y))
 
         pipeUp.physicsBody = SKPhysicsBody(rectangleOfSize: pipeUp.size)
         pipeUp.physicsBody.dynamic = false
