@@ -11,7 +11,7 @@ import SpriteKit
 class GameScene: SKScene {
     var bird = SKSpriteNode()
     var skyColor = SKColor()
-    var verticalPipeGap = 100.0
+    var verticalPipeGap = 150.0
     var pipeTextureUp = SKTexture()
     var pipeTextureDown = SKTexture()
     var movePipesAndRemove = SKAction()
@@ -111,19 +111,23 @@ class GameScene: SKScene {
         var pipePair = SKNode()
         pipePair.position = CGPointMake( self.frame.size.width + pipeTextureUp.size().width * 2, 0 );
         pipePair.zPosition = -10;
-        
-        var y = Float(arc4random()) % Float(NSInteger( self.frame.size.height / 3 ));
+
+        var height = UInt32( self.frame.size.height / 4 )
+        var y = arc4random() % height + height;
         
         var pipeDown = SKSpriteNode(texture: pipeTextureDown)
         pipeDown.setScale(2.0)
-        pipeDown.position = CGPointMake(0.0, y)
+        pipeDown.position = CGPointMake(0.0, Float(y) + Float(pipeDown.size.height) + Float(verticalPipeGap))
+
+        
         pipeDown.physicsBody = SKPhysicsBody(rectangleOfSize: pipeDown.size)
         pipeDown.physicsBody.dynamic = false
         pipePair.addChild(pipeDown)
         
         var pipeUp = SKSpriteNode(texture: pipeTextureUp)
         pipeUp.setScale(2.0)
-        pipeUp.position = CGPointMake(0.0, y + Float(pipeUp.size.height) + Float(verticalPipeGap))
+        pipeUp.position = CGPointMake(0.0, Float(y))
+
         pipeUp.physicsBody = SKPhysicsBody(rectangleOfSize: pipeUp.size)
         pipeUp.physicsBody.dynamic = false
         pipePair.addChild(pipeUp)
