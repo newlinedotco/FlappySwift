@@ -51,7 +51,7 @@ class GameScene: SKScene {
         for var i:CGFloat = 0; i < 2.0 + self.frame.size.width / ( skyTexture.size().width * 2.0 ); ++i {
             var sprite = SKSpriteNode(texture: skyTexture)
             sprite.setScale(2.0)
-            sprite.zPosition = -20;
+            sprite.zPosition = -20
             sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2.0 + groundTexture.size().height * 2.0)
             sprite.runAction(moveSkySpritesForever)
             self.addChild(sprite)
@@ -64,10 +64,10 @@ class GameScene: SKScene {
         pipeTextureDown.filteringMode = SKTextureFilteringMode.Nearest
         
         // create the pipes movement actions
-        var distanceToMove = CGFloat(self.frame.size.width + 2.0 * pipeTextureUp.size().width);
-        var movePipes = SKAction.moveByX(-distanceToMove, y:0.0, duration:NSTimeInterval(0.01 * distanceToMove));
-        var removePipes = SKAction.removeFromParent();
-        movePipesAndRemove = SKAction.sequence([movePipes, removePipes]);
+        var distanceToMove = CGFloat(self.frame.size.width + 2.0 * pipeTextureUp.size().width)
+        var movePipes = SKAction.moveByX(-distanceToMove, y:0.0, duration:NSTimeInterval(0.01 * distanceToMove))
+        var removePipes = SKAction.removeFromParent()
+        movePipesAndRemove = SKAction.sequence([movePipes, removePipes])
         
         // spawn the pipes
         var spawn = SKAction.runBlock({() in self.spawnPipes()})
@@ -109,11 +109,11 @@ class GameScene: SKScene {
     
     func spawnPipes() {
         var pipePair = SKNode()
-        pipePair.position = CGPointMake( self.frame.size.width + pipeTextureUp.size().width * 2, 0 );
-        pipePair.zPosition = -10;
+        pipePair.position = CGPointMake( self.frame.size.width + pipeTextureUp.size().width * 2, 0 )
+        pipePair.zPosition = -10
         
         var height = UInt32( self.frame.size.height / 4 )
-        var y = arc4random() % height + height;
+        var y = arc4random() % height + height
         
         var pipeDown = SKSpriteNode(texture: pipeTextureDown)
         pipeDown.setScale(2.0)
@@ -132,7 +132,7 @@ class GameScene: SKScene {
         pipeUp.physicsBody.dynamic = false
         pipePair.addChild(pipeUp)
         
-        pipePair.runAction(movePipesAndRemove);
+        pipePair.runAction(movePipesAndRemove)
         self.addChild(pipePair)
     }
     
@@ -150,17 +150,17 @@ class GameScene: SKScene {
     
     func clamp(min: CGFloat, max: CGFloat, value: CGFloat) -> CGFloat {
         if( value > max ) {
-            return max;
+            return max
         } else if( value < min ) {
-            return min;
+            return min
         } else {
-            return value;
+            return value
         }
     }
     
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        bird.zRotation = self.clamp( -1, max: 0.5, value: bird.physicsBody.velocity.dy * ( bird.physicsBody.velocity.dy < 0 ? 0.003 : 0.001 ) );
+        bird.zRotation = self.clamp( -1, max: 0.5, value: bird.physicsBody.velocity.dy * ( bird.physicsBody.velocity.dy < 0 ? 0.003 : 0.001 ) )
     }
 }
