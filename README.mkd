@@ -6,7 +6,9 @@ An implementation of Flappy Bird in Swift for iOS 8.
 
 # Notes
 
-We're launching a course [Game Programming with Swift](https://fullstackedu.com) - _Put in your email if you'd like early access_
+We're launching a course [Game Programming with Swift](https://fullstackedu.com)
+
+If you are interested in early access to the course, head to [fullstackedu.com](https://www.fullstackedu.com) and _enter in your email in the signup box at the bottom of the page_ to be notified of updates on the course itself.
 
 # Authors
 
