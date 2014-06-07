@@ -9,13 +9,14 @@
 import SpriteKit
 
 class GameScene: SKScene {
-    var bird = SKSpriteNode()
-    var skyColor = SKColor()
     let verticalPipeGap = 150.0
-    var pipeTextureUp = SKTexture()
-    var pipeTextureDown = SKTexture()
-    var movePipesAndRemove = SKAction()
-    
+
+    var bird:SKSpriteNode!
+    var skyColor:SKColor!
+    var pipeTextureUp:SKTexture!
+    var pipeTextureDown:SKTexture!
+    var movePipesAndRemove:SKAction!
+   
     override func didMoveToView(view: SKView) {
         // setup physics
         self.physicsWorld.gravity = CGVectorMake( 0.0, -5.0 )
