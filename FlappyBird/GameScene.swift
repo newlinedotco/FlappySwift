@@ -71,7 +71,7 @@ class GameScene: SKScene {
         movePipesAndRemove = SKAction.sequence([movePipes, removePipes])
         
         // spawn the pipes
-        let spawn = SKAction.runBlock({() in self.spawnPipes()})
+        let spawn = SKAction.runBlock(spawnPipes)
         let delay = SKAction.waitForDuration(NSTimeInterval(2.0))
         let spawnThenDelay = SKAction.sequence([spawn, delay])
         let spawnThenDelayForever = SKAction.repeatActionForever(spawnThenDelay)
