@@ -162,20 +162,8 @@ class GameScene: SKScene {
         }
     }
     
-    // TODO: Move to utilities somewhere. There's no reason this should be a member function
-    func clamp(min: CGFloat, max: CGFloat, value: CGFloat) -> CGFloat {
-        if( value > max ) {
-            return max
-        } else if( value < min ) {
-            return min
-        } else {
-            return value
-        }
-    }
-    
-    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        bird.zRotation = self.clamp( -1, max: 0.5, value: bird.physicsBody.velocity.dy * ( bird.physicsBody.velocity.dy < 0 ? 0.003 : 0.001 ) )
+        bird.zRotation = (bird.physicsBody.velocity.dy * ( bird.physicsBody.velocity.dy < 0 ? 0.003 : 0.001 )).clampToValue( between: -1, and: 0.5)
     }
 }
