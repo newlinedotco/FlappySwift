@@ -17,13 +17,26 @@ class GameScene: SKScene {
     var movePipesAndRemove:SKAction!
    
     override func didMoveToView(view: SKView) {
-        // setup physics
+        
+        setupPhysics()
+        setupBackground()
+        let groundTexture = setupGround()
+        setupSkyline(groundTexture)
+        setupPipes()
+        setupBird()
+        
+        initGround(groundTexture);
+    }
+    
+    func setupPhysics() {
         self.physicsWorld.gravity = CGVectorMake( 0.0, -5.0 )
-        
-        // setup background color
+    }
+    
+    func setupBackground() {
         self.backgroundColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
-        
-        // ground
+    }
+    
+    func setupGround() -> SKTexture {
         let groundTexture = SKTexture(imageNamed: "land")
         groundTexture.filteringMode = SKTextureFilteringMode.Nearest
         
@@ -39,7 +52,10 @@ class GameScene: SKScene {
             self.addChild(sprite)
         }
         
-        // skyline
+        return groundTexture;
+    }
+    
+    func setupSkyline(groundTexture: SKTexture) -> SKTexture {
         let skyTexture = SKTexture(imageNamed: "sky")
         skyTexture.filteringMode = SKTextureFilteringMode.Nearest
         
@@ -56,7 +72,10 @@ class GameScene: SKScene {
             self.addChild(sprite)
         }
         
-        // create the pipes textures
+        return skyTexture;
+    }
+    
+    func setupPipes() {
         pipeTextureUp = SKTexture(imageNamed: "PipeUp")
         pipeTextureUp.filteringMode = SKTextureFilteringMode.Nearest
         pipeTextureDown = SKTexture(imageNamed: "PipeDown")
@@ -74,8 +93,9 @@ class GameScene: SKScene {
         let spawnThenDelay = SKAction.sequence([spawn, delay])
         let spawnThenDelayForever = SKAction.repeatActionForever(spawnThenDelay)
         self.runAction(spawnThenDelayForever)
-        
-        // setup our bird
+    }
+    
+    func setupBird() {
         let birdTexture1 = SKTexture(imageNamed: "bird-01")
         birdTexture1.filteringMode = SKTextureFilteringMode.Nearest
         let birdTexture2 = SKTexture(imageNamed: "bird-02")
@@ -89,21 +109,19 @@ class GameScene: SKScene {
         bird.position = CGPoint(x: self.frame.size.width * 0.35, y:self.frame.size.height * 0.6)
         bird.runAction(flap)
         
-        
         bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 2.0)
         bird.physicsBody.dynamic = true
         bird.physicsBody.allowsRotation = false
         
         self.addChild(bird)
-        
-        // create the ground
+    }
+    
+    func initGround(texture : SKTexture) {
         var ground = SKNode()
-        ground.position = CGPointMake(0, groundTexture.size().height)
-        ground.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.frame.size.width, groundTexture.size().height * 2.0))
+        ground.position = CGPointMake(0, texture.size().height)
+        ground.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.frame.size.width, texture.size().height * 2.0))
         ground.physicsBody.dynamic = false
         self.addChild(ground)
-        
-        
     }
     
     func spawnPipes() {
