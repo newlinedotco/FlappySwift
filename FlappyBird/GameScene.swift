@@ -12,7 +12,6 @@ class GameScene: SKScene {
     let verticalPipeGap = 150.0
 
     var bird:SKSpriteNode!
-    var skyColor:SKColor!
     var pipeTextureUp:SKTexture!
     var pipeTextureDown:SKTexture!
     var movePipesAndRemove:SKAction!
@@ -22,8 +21,7 @@ class GameScene: SKScene {
         self.physicsWorld.gravity = CGVectorMake( 0.0, -5.0 )
         
         // setup background color
-        skyColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
-        self.backgroundColor = skyColor
+        self.backgroundColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
         
         // ground
         let groundTexture = SKTexture(imageNamed: "land")
