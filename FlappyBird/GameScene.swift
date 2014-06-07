@@ -36,43 +36,40 @@ class GameScene: SKScene {
         self.backgroundColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
     }
     
-    func setupGround() -> SKTexture {
-        let groundTexture = SKTexture(imageNamed: "land")
-        groundTexture.filteringMode = SKTextureFilteringMode.Nearest
+    func prepareTexture(imageName: String, durationMulitplier: Float, spritePositioner: (CGFloat, SKSpriteNode) -> ()) -> SKTexture {
+        let texture = SKTexture(imageNamed: imageName)
+        texture.filteringMode = SKTextureFilteringMode.Nearest
         
-        let moveGroundSprite = SKAction.moveByX(-groundTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.02 * groundTexture.size().width * 2.0))
-        let resetGroundSprite = SKAction.moveByX(groundTexture.size().width * 2.0, y: 0, duration: 0.0)
-        let moveGroundSpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveGroundSprite,resetGroundSprite]))
+        let moveSprite = SKAction.moveByX(-texture.size().width * 2.0, y: 0, duration: NSTimeInterval(durationMulitplier * texture.size().width * 2.0))
+        let resetSprite = SKAction.moveByX(texture.size().width * 2.0, y: 0, duration: 0.0)
+        let moveSpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveSprite,resetSprite]))
         
-        for var i:CGFloat = 0; i < 2.0 + self.frame.size.width / ( groundTexture.size().width * 2.0 ); ++i {
-            let sprite = SKSpriteNode(texture: groundTexture)
+        for var i:CGFloat = 0; i < 2.0 + self.frame.size.width / ( texture.size().width * 2.0 ); ++i {
+            let sprite = SKSpriteNode(texture: texture)
             sprite.setScale(2.0)
-            sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2.0)
-            sprite.runAction(moveGroundSpritesForever)
+            
+            spritePositioner(i, sprite)
+            
+            sprite.runAction(moveSpritesForever)
             self.addChild(sprite)
         }
         
-        return groundTexture;
+        return texture;
+    }
+    
+    func setupGround() -> SKTexture {
+        return prepareTexture("land", durationMulitplier: 0.02) {
+            (let i, let sprite) -> () in
+            sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2.0)
+        }
     }
     
     func setupSkyline(groundTexture: SKTexture) -> SKTexture {
-        let skyTexture = SKTexture(imageNamed: "sky")
-        skyTexture.filteringMode = SKTextureFilteringMode.Nearest
-        
-        let moveSkySprite = SKAction.moveByX(-skyTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.1 * skyTexture.size().width * 2.0))
-        let resetSkySprite = SKAction.moveByX(skyTexture.size().width * 2.0, y: 0, duration: 0.0)
-        let moveSkySpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveSkySprite,resetSkySprite]))
-        
-        for var i:CGFloat = 0; i < 2.0 + self.frame.size.width / ( skyTexture.size().width * 2.0 ); ++i {
-            let sprite = SKSpriteNode(texture: skyTexture)
-            sprite.setScale(2.0)
+        return prepareTexture("sky", durationMulitplier: 0.01) {
+            (let i, let sprite) -> () in
             sprite.zPosition = -20
             sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2.0 + groundTexture.size().height * 2.0)
-            sprite.runAction(moveSkySpritesForever)
-            self.addChild(sprite)
         }
-        
-        return skyTexture;
     }
     
     func setupPipes() {
