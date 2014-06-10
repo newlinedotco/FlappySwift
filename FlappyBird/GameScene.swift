@@ -10,22 +10,25 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     let verticalPipeGap = 150.0
+    
+    let normalSkyColor =  SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
+    let errorSkyColor = SKColor(red: 1, green: 0, blue: 0, alpha: 1.0)
+    
+    let score = ScoreKeeper()
 
     var bird:SKSpriteNode!
-    var skyColor:SKColor!
     var pipeTextureUp:SKTexture!
     var pipeTextureDown:SKTexture!
     var movePipesAndRemove:SKAction!
     var moving:SKNode!
     var pipes:SKNode!
-    var canRestart = Bool()
-    var scoreLabelNode:SKLabelNode!
-    var score = NSInteger()
+    var canRestart = false
     
     let birdCategory: UInt32 = 1 << 0
     let worldCategory: UInt32 = 1 << 1
     let pipeCategory: UInt32 = 1 << 2
     let scoreCategory: UInt32 = 1 << 3
+    
    
     override func didMoveToView(view: SKView) {
         canRestart = false
@@ -47,8 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setupBackground() {
-        skyColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
-        self.backgroundColor = skyColor
+        self.backgroundColor = normalSkyColor
     }
     
     func prepareTexture(imageName: String, durationMulitplier: Float, spritePositioner: (CGFloat, SKSpriteNode) -> ()) -> SKTexture {
@@ -188,12 +190,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func setupScores() {
-        score = 0
-        scoreLabelNode = SKLabelNode(fontNamed:"MarkerFelt-Wide")
-        scoreLabelNode.position = CGPointMake( CGRectGetMidX( self.frame ), 3 * self.frame.size.height / 4 )
-        scoreLabelNode.zPosition = 100
-        scoreLabelNode.text = String(score)
-        self.addChild(scoreLabelNode)
+        score.reset()
+        self.addChild(score.setupVisualization(atXY: CGPointMake( CGRectGetMidX( self.frame ), 3 * self.frame.size.height / 4 ), andZ: 100))
     }
     
     func resetScene (){
@@ -211,8 +209,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         canRestart = false
         
         // Reset score
-        score = 0
-        scoreLabelNode.text = String(score)
+        score.reset()
         
         // Restart animation
         moving.speed = 1
@@ -241,30 +238,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didBeginContact(contact: SKPhysicsContact) {
         if moving.speed > 0 {
             if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
+                
                 // Bird has contact with score entity
-                score++
-                scoreLabelNode.text = String(score)
+                score.increment()
                 
-                // Add a little visual feedback for the score increment
-                scoreLabelNode.runAction(SKAction.sequence([SKAction.scaleTo(1.5, duration:NSTimeInterval(0.1)), SKAction.scaleTo(1.0, duration:NSTimeInterval(0.1))]))
             } else {
-                
                 moving.speed = 0
                 
                 bird.physicsBody.collisionBitMask = worldCategory
                 bird.runAction(  SKAction.rotateByAngle(CGFloat(M_PI) * CGFloat(bird.position.y) * 0.01, duration:1), completion:{self.bird.speed = 0 })
                 
-                
-                // Flash background if contact is detected
-                self.removeActionForKey("flash")
-                self.runAction(SKAction.sequence([SKAction.repeatAction(SKAction.sequence([SKAction.runBlock({
-                    self.backgroundColor = SKColor(red: 1, green: 0, blue: 0, alpha: 1.0)
-                    }),SKAction.waitForDuration(NSTimeInterval(0.05)), SKAction.runBlock({
-                        self.backgroundColor = self.skyColor
-                        }), SKAction.waitForDuration(NSTimeInterval(0.05))]), count:4), SKAction.runBlock({
-                            self.canRestart = true
-                            })]), withKey: "flash")
+                flashBackground()
             }
         }
+    }
+    
+    func flashBackground() {
+        self.removeActionForKey("flash")
+        self.runAction(SKAction.sequence([SKAction.repeatAction(SKAction.sequence([SKAction.runBlock({
+            self.backgroundColor = self.errorSkyColor
+            }),SKAction.waitForDuration(NSTimeInterval(0.05)), SKAction.runBlock({
+                self.backgroundColor = self.normalSkyColor
+                }), SKAction.waitForDuration(NSTimeInterval(0.05))]), count:4), SKAction.runBlock({
+                    self.canRestart = true
+                    })]), withKey: "flash")
+        
     }
 }
