@@ -46,7 +46,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // ground
         let groundTexture = SKTexture(imageNamed: "land")
-        groundTexture.filteringMode = SKTextureFilteringMode.Nearest
+        groundTexture.filteringMode = .Nearest
         
         let moveGroundSprite = SKAction.moveByX(-groundTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.02 * groundTexture.size().width * 2.0))
         let resetGroundSprite = SKAction.moveByX(groundTexture.size().width * 2.0, y: 0, duration: 0.0)
@@ -62,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // skyline
         let skyTexture = SKTexture(imageNamed: "sky")
-        skyTexture.filteringMode = SKTextureFilteringMode.Nearest
+        skyTexture.filteringMode = .Nearest
         
         let moveSkySprite = SKAction.moveByX(-skyTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.1 * skyTexture.size().width * 2.0))
         let resetSkySprite = SKAction.moveByX(skyTexture.size().width * 2.0, y: 0, duration: 0.0)
@@ -79,9 +79,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // create the pipes textures
         pipeTextureUp = SKTexture(imageNamed: "PipeUp")
-        pipeTextureUp.filteringMode = SKTextureFilteringMode.Nearest
+        pipeTextureUp.filteringMode = .Nearest
         pipeTextureDown = SKTexture(imageNamed: "PipeDown")
-        pipeTextureDown.filteringMode = SKTextureFilteringMode.Nearest
+        pipeTextureDown.filteringMode = .Nearest
         
         // create the pipes movement actions
         let distanceToMove = CGFloat(self.frame.size.width + 2.0 * pipeTextureUp.size().width)
@@ -98,9 +98,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // setup our bird
         let birdTexture1 = SKTexture(imageNamed: "bird-01")
-        birdTexture1.filteringMode = SKTextureFilteringMode.Nearest
+        birdTexture1.filteringMode = .Nearest
         let birdTexture2 = SKTexture(imageNamed: "bird-02")
-        birdTexture2.filteringMode = SKTextureFilteringMode.Nearest
+        birdTexture2.filteringMode = .Nearest
         
         let anim = SKAction.animateWithTextures([birdTexture1, birdTexture2], timePerFrame: 0.2)
         let flap = SKAction.repeatActionForever(anim)
