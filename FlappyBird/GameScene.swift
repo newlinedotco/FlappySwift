@@ -144,12 +144,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         pipePair.position = CGPointMake( self.frame.size.width + pipeTextureUp.size().width * 2, 0 )
         pipePair.zPosition = -10
         
-        let height = UInt32( self.frame.size.height / 4 )
+        let height = UInt32( UInt(self.frame.size.height / 4) )
         let y = arc4random() % height + height
         
         let pipeDown = SKSpriteNode(texture: pipeTextureDown)
         pipeDown.setScale(2.0)
-        pipeDown.position = CGPointMake(0.0, CGFloat(y) + pipeDown.size.height + CGFloat(verticalPipeGap))
+        pipeDown.position = CGPointMake(0.0, CGFloat(Double(y)) + pipeDown.size.height + CGFloat(verticalPipeGap))
         
         
         pipeDown.physicsBody = SKPhysicsBody(rectangleOfSize: pipeDown.size)
@@ -160,7 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let pipeUp = SKSpriteNode(texture: pipeTextureUp)
         pipeUp.setScale(2.0)
-        pipeUp.position = CGPointMake(0.0, CGFloat(y))
+        pipeUp.position = CGPointMake(0.0, CGFloat(Double(y)))
         
         pipeUp.physicsBody = SKPhysicsBody(rectangleOfSize: pipeUp.size)
         pipeUp.physicsBody.dynamic = false
