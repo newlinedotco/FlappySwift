@@ -20,6 +20,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var pipes:SKNode!
     var canRestart = Bool()
     var scoreLabelNode:SKLabelNode!
+    var scoreLabelGameOver:SKLabelNode!
     var score = NSInteger()
     
     let birdCategory: UInt32 = 1 << 0
@@ -29,7 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     override func didMoveToView(view: SKView) {
         
-        canRestart = false
+        canRestart = true
         
         // setup physics
         self.physicsWorld.gravity = CGVectorMake( 0.0, -5.0 )
@@ -61,8 +62,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         // skyline
-        let skyTexture = SKTexture(imageNamed: "sky")
-        skyTexture.filteringMode = .Nearest
+        let skyTexture = SKTexture(imageNamed: "bela-vista")
+        skyTexture.filteringMode = .Nearest// .Linear// .Nearest
         
         let moveSkySprite = SKAction.moveByX(-skyTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.1 * skyTexture.size().width * 2.0))
         let resetSkySprite = SKAction.moveByX(skyTexture.size().width * 2.0, y: 0, duration: 0.0)
@@ -112,12 +113,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         
         bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 2.0)
-        bird.physicsBody.dynamic = true
-        bird.physicsBody.allowsRotation = false
+        bird.physicsBody?.dynamic = true
+        bird.physicsBody?.allowsRotation = false
         
-        bird.physicsBody.categoryBitMask = birdCategory
-        bird.physicsBody.collisionBitMask = worldCategory | pipeCategory
-        bird.physicsBody.contactTestBitMask = worldCategory | pipeCategory
+        bird.physicsBody?.categoryBitMask = birdCategory
+        bird.physicsBody?.collisionBitMask = worldCategory | pipeCategory
+        bird.physicsBody?.contactTestBitMask = worldCategory | pipeCategory
         
         self.addChild(bird)
         
@@ -125,18 +126,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         var ground = SKNode()
         ground.position = CGPointMake(0, groundTexture.size().height)
         ground.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.frame.size.width, groundTexture.size().height * 2.0))
-        ground.physicsBody.dynamic = false
-        ground.physicsBody.categoryBitMask = worldCategory
+        ground.physicsBody?.dynamic = false
+        ground.physicsBody?.categoryBitMask = worldCategory
         self.addChild(ground)
         
         // Initialize label and create a label which holds the score
         score = 0
         scoreLabelNode = SKLabelNode(fontNamed:"MarkerFelt-Wide")
-        scoreLabelNode.position = CGPointMake( CGRectGetMidX( self.frame ), 3 * self.frame.size.height / 4 )
-        scoreLabelNode.zPosition = 100
-        scoreLabelNode.text = String(score)
+        scoreLabelNode.fontSize = 50.0
+        scoreLabelNode.fontColor = UIColor.greenColor()
+        scoreLabelNode.colorBlendFactor = 0.5
+        scoreLabelNode.position = CGPointMake( CGRectGetMidX( self.frame ), 1 * self.frame.size.height / 2 - 256 )
+        scoreLabelNode.zPosition = 10
+        scoreLabelNode.text = "Meus Pontos: \(String(score))"
         self.addChild(scoreLabelNode)
         
+        scoreLabelGameOver = SKLabelNode(fontNamed:"MarkerFelt-Wide")
+        scoreLabelGameOver.fontSize = 50.0
+        scoreLabelGameOver.fontColor = UIColor.redColor()
+        scoreLabelGameOver.colorBlendFactor = 1.0
+        scoreLabelGameOver.position = CGPointMake( CGRectGetMidX( self.frame ), 1 * self.frame.size.height / 2 )
+        scoreLabelGameOver.text = "Voce perdeu !!!"
+        //self.addChild(scoreLabelGameOver)
     }
     
     func spawnPipes() {
@@ -153,9 +164,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         
         pipeDown.physicsBody = SKPhysicsBody(rectangleOfSize: pipeDown.size)
-        pipeDown.physicsBody.dynamic = false
-        pipeDown.physicsBody.categoryBitMask = pipeCategory
-        pipeDown.physicsBody.contactTestBitMask = birdCategory
+        pipeDown.physicsBody?.dynamic = false
+        pipeDown.physicsBody?.categoryBitMask = pipeCategory
+        pipeDown.physicsBody?.contactTestBitMask = birdCategory
         pipePair.addChild(pipeDown)
         
         let pipeUp = SKSpriteNode(texture: pipeTextureUp)
@@ -163,17 +174,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         pipeUp.position = CGPointMake(0.0, CGFloat(y))
         
         pipeUp.physicsBody = SKPhysicsBody(rectangleOfSize: pipeUp.size)
-        pipeUp.physicsBody.dynamic = false
-        pipeUp.physicsBody.categoryBitMask = pipeCategory
-        pipeUp.physicsBody.contactTestBitMask = birdCategory
+        pipeUp.physicsBody?.dynamic = false
+        pipeUp.physicsBody?.categoryBitMask = pipeCategory
+        pipeUp.physicsBody?.contactTestBitMask = birdCategory
         pipePair.addChild(pipeUp)
         
         var contactNode = SKNode()
         contactNode.position = CGPointMake( pipeDown.size.width + bird.size.width / 2, CGRectGetMidY( self.frame ) )
         contactNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake( pipeUp.size.width, self.frame.size.height ))
-        contactNode.physicsBody.dynamic = false
-        contactNode.physicsBody.categoryBitMask = scoreCategory
-        contactNode.physicsBody.contactTestBitMask = birdCategory
+        contactNode.physicsBody?.dynamic = false
+        contactNode.physicsBody?.categoryBitMask = scoreCategory
+        contactNode.physicsBody?.contactTestBitMask = birdCategory
         pipePair.addChild(contactNode)
         
         pipePair.runAction(movePipesAndRemove)
@@ -184,10 +195,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     func resetScene (){
         // Move bird to original position and reset velocity
         bird.position = CGPointMake(self.frame.size.width / 2.5, CGRectGetMidY(self.frame))
-        bird.physicsBody.velocity = CGVectorMake( 0, 0 )
-        bird.physicsBody.collisionBitMask = worldCategory | pipeCategory
+        bird.physicsBody?.velocity = CGVectorMake( 0, 0 )
+        bird.physicsBody?.collisionBitMask = worldCategory | pipeCategory
         bird.speed = 1.0
         bird.zRotation = 0.0
+        
+        
         
         // Remove all existing pipes
         pipes.removeAllChildren()
@@ -196,11 +209,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         canRestart = false
         
         // Reset score
+        
         score = 0
-        scoreLabelNode.text = String(score)
+        scoreLabelNode.text = "Meus Pontos: \(String(score))"
         
         // Restart animation
         moving.speed = 1
+        
+        
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -209,8 +225,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             for touch: AnyObject in touches {
                 let location = touch.locationInNode(self)
                 
-                bird.physicsBody.velocity = CGVectorMake(0, 0)
-                bird.physicsBody.applyImpulse(CGVectorMake(0, 30))
+                bird.physicsBody?.velocity = CGVectorMake(0, 0)
+                bird.physicsBody?.applyImpulse(CGVectorMake(0, 30))
                 
             }
         }else if canRestart {
@@ -232,7 +248,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        bird.zRotation = self.clamp( -1, max: 0.5, value: bird.physicsBody.velocity.dy * ( bird.physicsBody.velocity.dy < 0 ? 0.003 : 0.001 ) )
+        var valueCGFloat = bird.physicsBody?.velocity.dy
+        bird.zRotation = self.clamp( -1, max: 0.5, value: valueCGFloat! * (valueCGFloat < 0 ? 0.003 : 0.001 ))
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
@@ -240,15 +257,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
                 // Bird has contact with score entity
                 score++
-                scoreLabelNode.text = String(score)
-                
+                scoreLabelNode.text = "Meus Pontos: \(String(score))"
+                scoreLabelNode.fontColor = .redColor()
                 // Add a little visual feedback for the score increment
                 scoreLabelNode.runAction(SKAction.sequence([SKAction.scaleTo(1.5, duration:NSTimeInterval(0.1)), SKAction.scaleTo(1.0, duration:NSTimeInterval(0.1))]))
+                scoreLabelNode.fontColor = .greenColor()
             } else {
                 
                 moving.speed = 0
                 
-                bird.physicsBody.collisionBitMask = worldCategory
+                bird.physicsBody?.collisionBitMask = worldCategory
                 bird.runAction(  SKAction.rotateByAngle(CGFloat(M_PI) * CGFloat(bird.position.y) * 0.01, duration:1), completion:{self.bird.speed = 0 })
                 
                 
