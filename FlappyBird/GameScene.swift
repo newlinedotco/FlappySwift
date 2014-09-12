@@ -20,6 +20,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var pipes:SKNode!
     var canRestart = Bool()
     var scoreLabelNode:SKLabelNode!
+    var scoreLabelGameOver:SKLabelNode!
     var score = NSInteger()
     
     let birdCategory: UInt32 = 1 << 0
@@ -29,7 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     override func didMoveToView(view: SKView) {
         
-        canRestart = false
+        canRestart = true
         
         // setup physics
         self.physicsWorld.gravity = CGVectorMake( 0.0, -5.0 )
@@ -61,8 +62,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         // skyline
-        let skyTexture = SKTexture(imageNamed: "sky")
-        skyTexture.filteringMode = .Nearest
+        let skyTexture = SKTexture(imageNamed: "bela-vista")
+        skyTexture.filteringMode = .Nearest// .Linear// .Nearest
         
         let moveSkySprite = SKAction.moveByX(-skyTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.1 * skyTexture.size().width * 2.0))
         let resetSkySprite = SKAction.moveByX(skyTexture.size().width * 2.0, y: 0, duration: 0.0)
@@ -132,11 +133,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // Initialize label and create a label which holds the score
         score = 0
         scoreLabelNode = SKLabelNode(fontNamed:"MarkerFelt-Wide")
-        scoreLabelNode.position = CGPointMake( CGRectGetMidX( self.frame ), 3 * self.frame.size.height / 4 )
-        scoreLabelNode.zPosition = 100
-        scoreLabelNode.text = String(score)
+        scoreLabelNode.fontSize = 50.0
+        scoreLabelNode.fontColor = UIColor.greenColor()
+        scoreLabelNode.colorBlendFactor = 0.5
+        scoreLabelNode.position = CGPointMake( CGRectGetMidX( self.frame ), 1 * self.frame.size.height / 2 - 256 )
+        scoreLabelNode.zPosition = 10
+        scoreLabelNode.text = "Meus Pontos: \(String(score))"
         self.addChild(scoreLabelNode)
         
+        scoreLabelGameOver = SKLabelNode(fontNamed:"MarkerFelt-Wide")
+        scoreLabelGameOver.fontSize = 50.0
+        scoreLabelGameOver.fontColor = UIColor.redColor()
+        scoreLabelGameOver.colorBlendFactor = 1.0
+        scoreLabelGameOver.position = CGPointMake( CGRectGetMidX( self.frame ), 1 * self.frame.size.height / 2 )
+        scoreLabelGameOver.text = "Voce perdeu !!!"
+        //self.addChild(scoreLabelGameOver)
     }
     
     func spawnPipes() {
@@ -189,6 +200,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bird.speed = 1.0
         bird.zRotation = 0.0
         
+        
+        
         // Remove all existing pipes
         pipes.removeAllChildren()
         
@@ -196,11 +209,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         canRestart = false
         
         // Reset score
+        
         score = 0
-        scoreLabelNode.text = String(score)
+        scoreLabelNode.text = "Meus Pontos: \(String(score))"
         
         // Restart animation
         moving.speed = 1
+        
+        
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -241,10 +257,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
                 // Bird has contact with score entity
                 score++
-                scoreLabelNode.text = String(score)
-                
+                scoreLabelNode.text = "Meus Pontos: \(String(score))"
+                scoreLabelNode.fontColor = .redColor()
                 // Add a little visual feedback for the score increment
                 scoreLabelNode.runAction(SKAction.sequence([SKAction.scaleTo(1.5, duration:NSTimeInterval(0.1)), SKAction.scaleTo(1.0, duration:NSTimeInterval(0.1))]))
+                scoreLabelNode.fontColor = .greenColor()
             } else {
                 
                 moving.speed = 0
