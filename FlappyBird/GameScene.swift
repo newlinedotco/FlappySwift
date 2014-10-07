@@ -9,7 +9,7 @@
 import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
-    let verticalPipeGap = 150.0
+    let verticalPipeGap = 120.0
     
     var bird:SKSpriteNode!
     var skyColor:SKColor!
@@ -48,7 +48,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let groundTexture = SKTexture(imageNamed: "land")
         groundTexture.filteringMode = .Nearest // shorter form for SKTextureFilteringMode.Nearest
         
-        let moveGroundSprite = SKAction.moveByX(-groundTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.02 * groundTexture.size().width * 2.0))
+        let moveGroundSprite = SKAction.moveByX(-groundTexture.size().width * 2.0, y: 0, duration: NSTimeInterval(0.01 * groundTexture.size().width * 2.0))
         let resetGroundSprite = SKAction.moveByX(groundTexture.size().width * 2.0, y: 0, duration: 0.0)
         let moveGroundSpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveGroundSprite,resetGroundSprite]))
         
@@ -256,11 +256,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 self.removeActionForKey("flash")
                 self.runAction(SKAction.sequence([SKAction.repeatAction(SKAction.sequence([SKAction.runBlock({
                     self.backgroundColor = SKColor(red: 1, green: 0, blue: 0, alpha: 1.0)
-                    }),SKAction.waitForDuration(NSTimeInterval(0.05)), SKAction.runBlock({
-                        self.backgroundColor = self.skyColor
-                        }), SKAction.waitForDuration(NSTimeInterval(0.05))]), count:4), SKAction.runBlock({
-                            self.canRestart = true
-                            })]), withKey: "flash")
+                }),SKAction.waitForDuration(NSTimeInterval(0.05)), SKAction.runBlock({
+                    self.backgroundColor = self.skyColor
+                }), SKAction.waitForDuration(NSTimeInterval(0.05))]), count:4), SKAction.runBlock({
+                    self.canRestart = true
+                })]), withKey: "flash")
             }
         }
     }
