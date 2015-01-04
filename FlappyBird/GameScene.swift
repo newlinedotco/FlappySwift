@@ -208,10 +208,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if moving.speed > 0  {
             for touch: AnyObject in touches {
                 let location = touch.locationInNode(self)
-                
-                bird.physicsBody?.velocity = CGVectorMake(0, 0)
-                bird.physicsBody?.applyImpulse(CGVectorMake(0, 30))
-                
+
+                if(bird.position.y >= self.frame.size.height){
+                    bird.position.y = CGRectGetHeight(self.frame)
+                }else{
+                    bird.physicsBody?.velocity = CGVectorMake(0, 0)
+                    bird.physicsBody?.applyImpulse(CGVectorMake(0, 30))
+                }
             }
         }else if canRestart {
             self.resetScene()
