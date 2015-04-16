@@ -10,7 +10,7 @@ import UIKit
 import SpriteKit
 
 extension SKNode {
-    class func unarchiveFromFile(file : NSString) -> SKNode? {
+    class func unarchiveFromFile(file : String) -> SKNode? {
         
         let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks")
         
@@ -18,7 +18,7 @@ extension SKNode {
         let archiver = NSKeyedUnarchiver(forReadingWithData: sceneData!)
         
         archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
-        let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as GameScene
+        let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as! GameScene
         archiver.finishDecoding()
         return scene
     }
@@ -31,7 +31,7 @@ class GameViewController: UIViewController {
 
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
-            let skView = self.view as SKView
+            let skView = self.view as! SKView
             skView.showsFPS = true
             skView.showsNodeCount = true
             

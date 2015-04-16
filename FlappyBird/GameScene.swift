@@ -203,7 +203,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         moving.speed = 1
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
         if moving.speed > 0  {
             for touch: AnyObject in touches {
@@ -213,14 +213,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 bird.physicsBody?.applyImpulse(CGVectorMake(0, 30))
                 
             }
-        }else if canRestart {
+        } else if canRestart {
             self.resetScene()
         }
     }
     
     // TODO: Move to utilities somewhere. There's no reason this should be a member function
     func clamp(min: CGFloat, max: CGFloat, value: CGFloat) -> CGFloat {
-        if( value > max ) {
+        if value > max {
             return max
         } else if( value < min ) {
             return min
