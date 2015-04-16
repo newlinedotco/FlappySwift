@@ -32,7 +32,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         canRestart = false
         
         // setup physics
-        self.physicsWorld.gravity = CGVectorMake( 0.0, -5.0 )
+        self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -5.0 )
         self.physicsWorld.contactDelegate = self
         
         // setup background color
@@ -55,7 +55,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         for var i:CGFloat = 0; i < 2.0 + self.frame.size.width / ( groundTexture.size().width * 2.0 ); ++i {
             let sprite = SKSpriteNode(texture: groundTexture)
             sprite.setScale(2.0)
-            sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2.0)
+            sprite.position = CGPoint(x: i * sprite.size.width, y: sprite.size.height / 2.0)
             sprite.runAction(moveGroundSpritesForever)
             moving.addChild(sprite)
         }
@@ -72,7 +72,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             let sprite = SKSpriteNode(texture: skyTexture)
             sprite.setScale(2.0)
             sprite.zPosition = -20
-            sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2.0 + groundTexture.size().height * 2.0)
+            sprite.position = CGPoint(x: i * sprite.size.width, y: sprite.size.height / 2.0 + groundTexture.size().height * 2.0)
             sprite.runAction(moveSkySpritesForever)
             moving.addChild(sprite)
         }
@@ -123,8 +123,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // create the ground
         var ground = SKNode()
-        ground.position = CGPointMake(0, groundTexture.size().height)
-        ground.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.frame.size.width, groundTexture.size().height * 2.0))
+        ground.position = CGPoint(x: 0, y: groundTexture.size().height)
+        ground.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: self.frame.size.width, height: groundTexture.size().height * 2.0))
         ground.physicsBody?.dynamic = false
         ground.physicsBody?.categoryBitMask = worldCategory
         self.addChild(ground)
@@ -132,7 +132,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // Initialize label and create a label which holds the score
         score = 0
         scoreLabelNode = SKLabelNode(fontNamed:"MarkerFelt-Wide")
-        scoreLabelNode.position = CGPointMake( CGRectGetMidX( self.frame ), 3 * self.frame.size.height / 4 )
+        scoreLabelNode.position = CGPoint( x: self.frame.midX, y: 3 * self.frame.size.height / 4 )
         scoreLabelNode.zPosition = 100
         scoreLabelNode.text = String(score)
         self.addChild(scoreLabelNode)
@@ -141,15 +141,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func spawnPipes() {
         let pipePair = SKNode()
-        pipePair.position = CGPointMake( self.frame.size.width + pipeTextureUp.size().width * 2, 0 )
+        pipePair.position = CGPoint( x: self.frame.size.width + pipeTextureUp.size().width * 2, y: 0 )
         pipePair.zPosition = -10
         
-        let height = UInt32( UInt(self.frame.size.height / 4) )
-        let y = arc4random() % height + height
+        let height = UInt32( self.frame.size.height / 4)
+        let y = Double(arc4random_uniform(height) + height);
         
         let pipeDown = SKSpriteNode(texture: pipeTextureDown)
         pipeDown.setScale(2.0)
-        pipeDown.position = CGPointMake(0.0, CGFloat(Double(y)) + pipeDown.size.height + CGFloat(verticalPipeGap))
+        pipeDown.position = CGPoint(x: 0.0, y: y + Double(pipeDown.size.height) + verticalPipeGap)
         
         
         pipeDown.physicsBody = SKPhysicsBody(rectangleOfSize: pipeDown.size)
@@ -160,7 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let pipeUp = SKSpriteNode(texture: pipeTextureUp)
         pipeUp.setScale(2.0)
-        pipeUp.position = CGPointMake(0.0, CGFloat(Double(y)))
+        pipeUp.position = CGPoint(x: 0.0, y: y)
         
         pipeUp.physicsBody = SKPhysicsBody(rectangleOfSize: pipeUp.size)
         pipeUp.physicsBody?.dynamic = false
@@ -169,8 +169,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         pipePair.addChild(pipeUp)
         
         var contactNode = SKNode()
-        contactNode.position = CGPointMake( pipeDown.size.width + bird.size.width / 2, CGRectGetMidY( self.frame ) )
-        contactNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake( pipeUp.size.width, self.frame.size.height ))
+        contactNode.position = CGPoint( x: pipeDown.size.width + bird.size.width / 2, y: self.frame.midY )
+        contactNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize( width: pipeUp.size.width, height: self.frame.size.height ))
         contactNode.physicsBody?.dynamic = false
         contactNode.physicsBody?.categoryBitMask = scoreCategory
         contactNode.physicsBody?.contactTestBitMask = birdCategory
@@ -183,8 +183,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     
     func resetScene (){
         // Move bird to original position and reset velocity
-        bird.position = CGPointMake(self.frame.size.width / 2.5, CGRectGetMidY(self.frame))
-        bird.physicsBody?.velocity = CGVectorMake( 0, 0 )
+        bird.position = CGPoint(x: self.frame.size.width / 2.5, y: self.frame.midY)
+        bird.physicsBody?.velocity = CGVector( dx: 0, dy: 0 )
         bird.physicsBody?.collisionBitMask = worldCategory | pipeCategory
         bird.speed = 1.0
         bird.zRotation = 0.0
@@ -209,8 +209,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             for touch: AnyObject in touches {
                 let location = touch.locationInNode(self)
                 
-                bird.physicsBody?.velocity = CGVectorMake(0, 0)
-                bird.physicsBody?.applyImpulse(CGVectorMake(0, 30))
+                bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
                 
             }
         } else if canRestart {
