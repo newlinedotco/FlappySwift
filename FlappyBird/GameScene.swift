@@ -203,10 +203,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         moving.speed = 1
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
         if moving.speed > 0  {
-            for touch: AnyObject in touches {
+            if let touch =  touches.first as? UITouch {
                 let location = touch.locationInNode(self)
                 
                 bird.physicsBody?.velocity = CGVectorMake(0, 0)
