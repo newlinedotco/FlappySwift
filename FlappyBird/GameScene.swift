@@ -202,8 +202,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // Restart animation
         moving.speed = 1
     }
-    
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+	
+	
+
+	
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
         if moving.speed > 0  {
             for touch: AnyObject in touches {
