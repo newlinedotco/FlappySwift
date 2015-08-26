@@ -1,3 +1,5 @@
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=55dd277abbda430100397040&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/55dd277abbda430100397040/build/latest)
+
 # FlappySwift
 
 An implementation of Flappy Bird in Swift for iOS 8.
