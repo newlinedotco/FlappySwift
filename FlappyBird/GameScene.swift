@@ -8,8 +8,29 @@
 
 import SpriteKit
 
+
+class NewGameScene: SKScene, SKPhysicsContactDelegate {
+    
+    func setup() {
+        let pipeGap = 250.0 // easy game
+        var bird:SKSpriteNode!
+        var skyColor:SKColor!
+        
+        var backgroundPic:SK3DNode!
+        var autoConstraints:SKConstraint!
+        
+        
+    }
+    
+    override func didApplyConstraints() {
+        var newHeight = 0
+        var newWidth = 0
+        var count:winsize!
+    }
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate{
-    let verticalPipeGap = 150.0
+    let verticalPipeGap = 250.0
     
     var bird:SKSpriteNode!
     var skyColor:SKColor!
