@@ -162,6 +162,8 @@
 		437451F2193D163700654986 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Fullstack.io;
 				TargetAttributes = {
