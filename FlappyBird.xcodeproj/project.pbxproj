@@ -68,6 +68,7 @@
 				437451FB193D163700654986 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		437451FB193D163700654986 /* Products */ = {
 			isa = PBXGroup;
