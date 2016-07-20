@@ -52,7 +52,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let resetGroundSprite = SKAction.moveByX(groundTexture.size().width * 2.0, y: 0, duration: 0.0)
         let moveGroundSpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveGroundSprite,resetGroundSprite]))
         
-        for var i:CGFloat = 0; i < 2.0 + self.frame.size.width / ( groundTexture.size().width * 2.0 ); ++i {
+        let i:CGFloat = 0
+        
+        //for var i:CGFloat = 0; i < 2.0 + self.frame.size.width / ( groundTexture.size().width * 2.0 ); ++i {
+        for _ in 0 ..< Int(2.0 + self.frame.size.width / ( groundTexture.size().width * 2.0 )) {
             let sprite = SKSpriteNode(texture: groundTexture)
             sprite.setScale(2.0)
             sprite.position = CGPoint(x: i * sprite.size.width, y: sprite.size.height / 2.0)
@@ -68,7 +71,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         let resetSkySprite = SKAction.moveByX(skyTexture.size().width * 2.0, y: 0, duration: 0.0)
         let moveSkySpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveSkySprite,resetSkySprite]))
         
-        for var i:CGFloat = 0; i < 2.0 + self.frame.size.width / ( skyTexture.size().width * 2.0 ); ++i {
+//        let i:CGFloat = 0
+        for _ in 0 ..< Int(2.0 + self.frame.size.width / ( skyTexture.size().width * 2.0 )) {
+        
+        //for var i:CGFloat = 0; i < 2.0 + self.frame.size.width / ( skyTexture.size().width * 2.0 ); ++i {
             let sprite = SKSpriteNode(texture: skyTexture)
             sprite.setScale(2.0)
             sprite.zPosition = -20
@@ -122,7 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.addChild(bird)
         
         // create the ground
-        var ground = SKNode()
+        let ground = SKNode()
         ground.position = CGPoint(x: 0, y: groundTexture.size().height)
         ground.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: self.frame.size.width, height: groundTexture.size().height * 2.0))
         ground.physicsBody?.dynamic = false
@@ -168,7 +174,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         pipeUp.physicsBody?.contactTestBitMask = birdCategory
         pipePair.addChild(pipeUp)
         
-        var contactNode = SKNode()
+        let contactNode = SKNode()
         contactNode.position = CGPoint( x: pipeDown.size.width + bird.size.width / 2, y: self.frame.midY )
         contactNode.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize( width: pipeUp.size.width, height: self.frame.size.height ))
         contactNode.physicsBody?.dynamic = false
@@ -206,7 +212,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         /* Called when a touch begins */
         if moving.speed > 0  {
             for touch: AnyObject in touches {
-                let location = touch.locationInNode(self)
+                _ = touch.locationInNode(self)
                 
                 bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 bird.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
@@ -238,7 +244,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         if moving.speed > 0 {
             if ( contact.bodyA.categoryBitMask & scoreCategory ) == scoreCategory || ( contact.bodyB.categoryBitMask & scoreCategory ) == scoreCategory {
                 // Bird has contact with score entity
-                score++
+                score += 1
                 scoreLabelNode.text = String(score)
                 
                 // Add a little visual feedback for the score increment
