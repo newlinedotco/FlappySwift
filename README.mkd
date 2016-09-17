@@ -18,4 +18,3 @@ If you are interested in early access to the course, head to [fullstackedu.com](
 - Ari Lerner - [@auser](https://twitter.com/auser)
 - Based on code by [Matthias Gall](http://digitalbreed.com/2014/how-to-build-a-game-like-flappy-bird-with-xcode-and-sprite-kit)
 
-# test
