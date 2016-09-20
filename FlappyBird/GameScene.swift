@@ -36,7 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.physicsWorld.contactDelegate = self
         
         // setup background color
-        skyColor = SKColor(red: 81.0/255.0, green: 192.0/255.0, blue: 201.0/255.0, alpha: 1.0)
+        skyColor = SKColor(red: 90.0/255.0, green: 190.0/255.0, blue: 201.0/255.0, alpha: 1.0)
         self.backgroundColor = skyColor
         
         moving = SKNode()
