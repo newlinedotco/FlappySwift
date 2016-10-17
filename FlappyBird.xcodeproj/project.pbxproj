@@ -170,9 +170,11 @@
 				TargetAttributes = {
 					437451F9193D163700654986 = {
 						CreatedOnToolsVersion = 6.0;
+						LastSwiftMigration = 0800;
 					};
 					4374520F193D163800654986 = {
 						CreatedOnToolsVersion = 6.0;
+						LastSwiftMigration = 0800;
 						TestTargetID = 437451F9193D163700654986;
 					};
 				};
@@ -345,6 +347,7 @@
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -356,6 +359,7 @@
 				INFOPLIST_FILE = FlappyBird/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -375,6 +379,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -391,6 +396,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
