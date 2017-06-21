@@ -45,7 +45,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         moving.addChild(pipes)
         
         // ground
-        let groundTexture = SKTexture(imageNamed: "land")
+        let groundTexture = global.getSKTexture(texture: .land)
         groundTexture.filteringMode = .nearest // shorter form for SKTextureFilteringMode.Nearest
         
         let moveGroundSprite = SKAction.moveBy(x: -groundTexture.size().width * 2.0, y: 0, duration: TimeInterval(0.02 * groundTexture.size().width * 2.0))
@@ -62,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         // skyline
-        let skyTexture = SKTexture(imageNamed: "sky")
+        let skyTexture = global.getSKTexture(texture: .sky)
         skyTexture.filteringMode = .nearest
         
         let moveSkySprite = SKAction.moveBy(x: -skyTexture.size().width * 2.0, y: 0, duration: TimeInterval(0.1 * skyTexture.size().width * 2.0))
@@ -80,9 +80,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         }
         
         // create the pipes textures
-        pipeTextureUp = SKTexture(imageNamed: "PipeUp")
+        pipeTextureUp = global.getSKTexture(texture: .pipeUp)
         pipeTextureUp.filteringMode = .nearest
-        pipeTextureDown = SKTexture(imageNamed: "PipeDown")
+        pipeTextureDown = global.getSKTexture(texture: .pipeDown)
         pipeTextureDown.filteringMode = .nearest
         
         // create the pipes movement actions
@@ -99,9 +99,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         self.run(spawnThenDelayForever)
         
         // setup our bird
-        let birdTexture1 = SKTexture(imageNamed: "bird-01")
+        let birdTexture1 = global.getSKTexture(texture: .bird01)
         birdTexture1.filteringMode = .nearest
-        let birdTexture2 = SKTexture(imageNamed: "bird-02")
+        let birdTexture2 = global.getSKTexture(texture: .bird02)
         birdTexture2.filteringMode = .nearest
         
         let anim = SKAction.animate(with: [birdTexture1, birdTexture2], timePerFrame: 0.2)

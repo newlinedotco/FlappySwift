@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CC9A1771EFA8D4200BB719D /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC9A1761EFA8D4200BB719D /* Global.swift */; };
 		43745200193D163700654986 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437451FF193D163700654986 /* AppDelegate.swift */; };
 		43745202193D163700654986 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 43745201193D163700654986 /* GameScene.sks */; };
 		43745204193D163800654986 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43745203193D163800654986 /* GameScene.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0CC9A1761EFA8D4200BB719D /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		437451FA193D163700654986 /* FlappyBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlappyBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		437451FE193D163700654986 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		437451FF193D163700654986 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				437451FF193D163700654986 /* AppDelegate.swift */,
 				43745201193D163700654986 /* GameScene.sks */,
 				43745203193D163800654986 /* GameScene.swift */,
+				0CC9A1761EFA8D4200BB719D /* Global.swift */,
 				43745205193D163800654986 /* GameViewController.swift */,
 				4374520A193D163800654986 /* Images.xcassets */,
 				437A3DB9193D326A00909BA0 /* bird.atlas */,
@@ -225,6 +228,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CC9A1771EFA8D4200BB719D /* Global.swift in Sources */,
 				43745204193D163800654986 /* GameScene.swift in Sources */,
 				43745206193D163800654986 /* GameViewController.swift in Sources */,
 				43745200193D163700654986 /* AppDelegate.swift in Sources */,
