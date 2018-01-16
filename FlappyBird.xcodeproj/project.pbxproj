@@ -356,8 +356,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.jamesreeve.flappyswift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3879b48b-f97c-4d0d-b890-f8a956aa0648";
-				PROVISIONING_PROFILE_SPECIFIER = FlappySwiftAdhoc_15Jan18;
+				PROVISIONING_PROFILE = "95d96693-e342-482e-b8b7-b6504ec918d5";
+				PROVISIONING_PROFILE_SPECIFIER = Microsoft_FlappySwiftAdhoc_16Jan18;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -373,8 +373,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = au.com.jamesreeve.flappyswift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3879b48b-f97c-4d0d-b890-f8a956aa0648";
-				PROVISIONING_PROFILE_SPECIFIER = FlappySwiftAdhoc_15Jan18;
+				PROVISIONING_PROFILE = "95d96693-e342-482e-b8b7-b6504ec918d5";
+				PROVISIONING_PROFILE_SPECIFIER = Microsoft_FlappySwiftAdhoc_16Jan18;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
