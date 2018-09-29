@@ -113,7 +113,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bird.run(flap)
         
         
-        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 2.0)
+        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 1.5) // FOR STABALIZE THE GAME, WITH 2.0, NO ONE ABLE TO SCORE MORE THAN 5
         bird.physicsBody?.isDynamic = true
         bird.physicsBody?.allowsRotation = false
         
