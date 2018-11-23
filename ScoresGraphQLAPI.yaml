@@ -1,0 +1,218 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  graphQlApiName:
+    Type: String
+  userPoolId:
+    Type: String
+  userPoolAwsRegion:
+    Type: String
+Resources:
+  GraphQLApi:
+    Type: "AWS::AppSync::GraphQLApi"
+    Properties:
+      AuthenticationType: AMAZON_COGNITO_USER_POOLS
+      UserPoolConfig:
+        UserPoolId:
+          Ref: userPoolId
+        AwsRegion:
+          Ref: userPoolAwsRegion
+        DefaultAction: ALLOW
+      Name:
+        Ref: graphQlApiName
+  
+  Schema:
+    Type: "AWS::AppSync::GraphQLSchema"
+    Properties:
+      Definition: |
+        input CreateScoreInput {
+            score: Int!
+            scoreDate: AWSTimestamp!
+        }
+
+        type Mutation {
+            createScore(input: CreateScoreInput!): Score
+        }
+
+        type Query {
+            listTopScores: ScoreConnection
+        }
+
+        type Score {
+            id: ID!
+            username: String!
+            score: Int!
+            game: String!
+            scoreDate: AWSTimestamp!
+        }
+
+        type ScoreConnection {
+            items: [Score]
+        }
+      ApiId:
+        Fn::GetAtt:
+        - GraphQLApi
+        - ApiId
+  
+  DynamoDBDataAccessRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "appsync.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies: 
+        - 
+          PolicyName: "dynamodb"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: "Allow"
+                Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:Scan
+                - dynamodb:Query
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                Resource:
+                - Fn::GetAtt:
+                  - DynamoDBTable
+                  - Arn
+                - Fn::Sub:
+                  - "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tableName}/index/*"
+                  - tableName:
+                      Ref: DynamoDBTable
+
+  DynamoDBTable:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      TableName: "ScoreTable"
+      AttributeDefinitions:
+      - AttributeName: "id"
+        AttributeType: S
+      - AttributeName: "game"
+        AttributeType: S
+      - AttributeName: "username"
+        AttributeType: S
+      - AttributeName: "score"
+        AttributeType: N      
+      KeySchema:
+      - AttributeName: "id"
+        KeyType: HASH
+      ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5     
+      GlobalSecondaryIndexes:
+      - IndexName: "game-score-index"
+        KeySchema: 
+        - AttributeName: "game"
+          KeyType: HASH
+        - AttributeName: "score"
+          KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5    
+      - IndexName: "username-score-index"
+        KeySchema: 
+        - AttributeName: "username"
+          KeyType: HASH
+        - AttributeName: "score"
+          KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5    
+
+  DynamoDBDataSource:
+    Type: "AWS::AppSync::DataSource"
+    Properties:
+      Type: AMAZON_DYNAMODB
+      ServiceRoleArn:
+        Fn::GetAtt:
+        - DynamoDBDataAccessRole
+        - Arn
+      ApiId:
+        Fn::GetAtt:
+        - GraphQLApi
+        - ApiId  
+      DynamoDBConfig:
+        TableName: ScoreTable
+        AwsRegion:
+          Ref: AWS::Region
+        UseCallerCredentials: false
+      Name:  "DynamoDBDataSource"
+
+  CreateScoreDDBResolver:
+    Type: "AWS::AppSync::Resolver"
+    Properties:
+      TypeName: "Mutation"
+      FieldName: "createScore"
+      ApiId:
+        Fn::GetAtt:
+        - GraphQLApi
+        - ApiId
+      DataSourceName:
+        Fn::GetAtt:
+        - DynamoDBDataSource
+        - Name
+      RequestMappingTemplate: |
+        {
+          "version": "2018-05-29",
+          "operation": "PutItem",
+          "key": {
+            "id": $util.dynamodb.toDynamoDBJson($util.autoId()),
+            "game": $util.dynamodb.toDynamoDBJson("FlappyBird"),
+            "username": $util.dynamodb.toDynamoDBJson($ctx.identity.username),
+          },
+          "attributeValues": $util.dynamodb.toMapValuesJson($ctx.args.input),
+        }
+      ResponseMappingTemplate: |
+        ## Pass back the result from DynamoDB. **
+        $util.toJson($ctx.result)
+
+  ListTopScoresDDBResolver:
+    Type: "AWS::AppSync::Resolver"
+    Properties:
+      TypeName: "Query"
+      FieldName: "listTopScores"
+      ApiId:
+        Fn::GetAtt:
+        - GraphQLApi
+        - ApiId
+      DataSourceName:
+        Fn::GetAtt:
+        - DynamoDBDataSource
+        - Name
+      RequestMappingTemplate: |
+        {
+          "version" : "2018-05-29",
+          "operation" : "Query",
+          "index" : "game-score-index",
+          "scanIndexForward" : false,
+          "limit": 20,
+          "query" : {
+              "expression": "#game = :game",
+              "expressionNames" : {
+              "#game" : "game"
+              },
+              "expressionValues" : {
+                  ":game" : {
+                      "S" : "FlappyBird"
+                  }
+              }
+          },   
+        }
+      ResponseMappingTemplate: |
+        ## Pass back the result from DynamoDB. **
+        $util.toJson($ctx.result)

@@ -8,8 +8,12 @@
 
 import SpriteKit
 
+protocol GameEnded: class {
+    func gameEnded(score: Int)
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate{
-    let verticalPipeGap = 150.0
+    let verticalPipeGap = 200.0
     
     var bird:SKSpriteNode!
     var skyColor:SKColor!
@@ -26,6 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     let worldCategory: UInt32 = 1 << 1
     let pipeCategory: UInt32 = 1 << 2
     let scoreCategory: UInt32 = 1 << 3
+    weak var gameEndedDelegate: GameEnded?
     
     override func didMove(to view: SKView) {
         
@@ -138,6 +143,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreLabelNode.zPosition = 100
         scoreLabelNode.text = String(score)
         self.addChild(scoreLabelNode)
+        moving.speed = 0
         
     }
     
@@ -247,6 +253,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                         }), SKAction.wait(forDuration: TimeInterval(0.05))]), count:4), SKAction.run({
                             self.canRestart = true
                             })]), withKey: "flash")
+                self.gameEndedDelegate?.gameEnded(score: score)
             }
         }
     }
