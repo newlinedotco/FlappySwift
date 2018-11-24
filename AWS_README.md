@@ -312,6 +312,7 @@ Your project has been successfully initialized and connected to the cloud!
 - The `High Scores` feature is powered by `AWS AppSync`(GraphQL API) and `Amazon DynamoDB`
 - We will add user the high scores feature to our project by using the AWS Cloudformation Console.
 - Go to [CloudFormation Console](https://console.aws.amazon.com/cloudformation/home) and select a region of your choice if you do not want to continue with the default region.
+- The cloud formation stack will create an `AWS AppSync` API which connects to `Amazon DynamoDB` for a persistent store. It creates 2 operations in GraphQL API: `CreateScore` and `ListHighScores`. Every user who plays the game will be creating their score entry in the backend using the `CreateScore` API and retrieving the leader board using `ListHighScores`. We will be doing a console walkthrough of the `AWS AppSync` console to understand the GraphQL API and its functionality later in the tutorial.
 
 #### High Scores Backend
 
