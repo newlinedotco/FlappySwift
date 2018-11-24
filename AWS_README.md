@@ -85,7 +85,7 @@ Your project has been successfully initialized and connected to the cloud!
 - From the Finder, drag `awsconfiguration.json` into Xcode IDE under the top Project Navigator folder (the folder name should match your Xcode project name `FlappyBird`). 
 - When the Options dialog box that appears, do the following:
     - Clear the Copy items if needed check box.
-    - Choose Create groups, and then choose Next.
+    - Choose Create groups, and then choose finish.
 - This configuration file contains information about your backend cloud resources.
 
 #### User Authentication Client
