@@ -107,10 +107,6 @@ Your project has been successfully initialized and connected to the cloud!
             AWSMobileClient.sharedInstance().initialize { (userState, error) in
                 if let userState = userState {
                     print("UserState: \(userState.rawValue)")
-                    // Initialize the pinpoint client.
-                    AppDelegate.pinpoint = AWSPinpoint(configuration:
-                        AWSPinpointConfiguration.defaultPinpointConfiguration(launchOptions: nil))
-                    self.initializeAppSync()
                 } else if let error = error {
                     print("error: \(error.localizedDescription)")
                 }
@@ -263,7 +259,9 @@ Your project has been successfully initialized and connected to the cloud!
     }
     ```
 
-- Next, we call these functions from the appropriate places.
+    Here we have added functions to record how many times users are opening the high scores screen, how many times user is playing the game and if the user is a new login or a returning user.
+
+- Next, we call these functions from the appropriate places where we identify the occurance of these events.
 
     Step 1: Call `logShowHighScore()` from `onHighScoresClicked()` method:
 
@@ -453,6 +451,8 @@ Your project has been successfully initialized and connected to the cloud!
         
     }
     ```
+
+    This extension captures the score created by the user.
 
     Step 2: Update the `GameEnded` extension implementation to call the newly added methods:
     
