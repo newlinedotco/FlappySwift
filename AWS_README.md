@@ -23,7 +23,9 @@ We will be using `AWS Amplify CLI` and `AWS Console` to initialize resources in 
 ### Initialize Project
 
 - Run `amplify init` from the root directory of `FlappySwift` project (It is the folder which contains `FlappyBird.xcodeproj`.)
-- Follow the prompts to give your project a name and select an IDE of your choice to edit your resources.
+- Follow the prompts to give your project a name and select an IDE of your choice to edit your resources 
+- choose the type of app as `iOS`.
+- choose the profile which you created when you ran `aws configure`
 - You should an update in terminal which looks like `⠙ Initializing project in the cloud...`
 - Wait till you see the following message in your terminal before proceeding to next step:
 
