@@ -1,10 +1,10 @@
 # Building Cloud Connected iOS Game
 
-## Clone the project
+## Setup the project
 
-* `git clone https://github.com/rohandubal/FlappySwift.git`
-* `cd FlappySwift`
-* `open FlappyBird.xcodeproj`
+* first clone the project using the command line `git clone https://github.com/rohandubal/FlappySwift.git`.
+* cd into the directory - `cd FlappySwift`
+* Open the Flappybird.xcodeproj using the command `open FlappyBird.xcodeproj`
 
 ## Run the base game application
 
