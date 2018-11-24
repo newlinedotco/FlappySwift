@@ -1,5 +1,11 @@
 # Building Cloud Connected iOS Game
 
+## Clone the project
+
+* `git clone https://github.com/rohandubal/FlappySwift.git`
+* `cd FlappySwift`
+* `open FlappyBird.xcodeproj`
+
 ## Run the base game application
 
 First, we will do a quick study of the game which we are going to modify. We are going to use [FlappySwift](https://github.com/fullstackio/FlappySwift), which is a swift implementation of the popular game Flappy Bird.
