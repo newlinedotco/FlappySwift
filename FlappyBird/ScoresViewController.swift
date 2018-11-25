@@ -15,7 +15,11 @@ class ScoresViewController: UIViewController {
     @IBOutlet weak var scoresTableView: UITableView!
     let cellReuseIdentifier = "cell"
     
-    var scores: [String] = []
+    var scores: [String] = [] {
+        didSet {
+            self.scoresTableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         scoresTableView.delegate = self
