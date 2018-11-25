@@ -1,8 +1,14 @@
 # Building Cloud Connected iOS Game
 
+## Pre-requisites
+
+- Xcode 9.2+
+- Node.js
+- amplify-cli
+
 ## Setup the project
 
-* first clone the project using the command line `git clone https://github.com/rohandubal/FlappySwift.git`.
+* First, clone the project using the command line `git clone https://github.com/rohandubal/FlappySwift.git`.
 * cd into the directory - `cd FlappySwift`
 * Open the Flappybird.xcodeproj using the command `open FlappyBird.xcodeproj`
 
