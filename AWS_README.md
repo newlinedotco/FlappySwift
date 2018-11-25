@@ -152,7 +152,6 @@ Your project has been successfully initialized and connected to the cloud!
                 AWSMobileClient.sharedInstance().showSignIn(navigationController: self.navigationController!) { (userState, error) in
                     if (error == nil) {
                         print("User State is \(userState!.rawValue)")
-                        self.logSuccessfulSignInEvent()
                     }
                 }
             } else {
