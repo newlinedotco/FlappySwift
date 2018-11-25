@@ -58,7 +58,7 @@ Your project has been successfully initialized and connected to the cloud!
         pod 'AWSMobileClient', '~> 2.7.0'
         pod 'AWSAuthUI', '~> 2.7.0'
         pod 'AWSUserPoolsSignIn', '~> 2.7.0'
-        pod 'AWSAppSync', '~> 2.6.24'
+        pod 'AWSAppSync', '~> 2.6.25'
         pod 'AWSPinpoint', '~> 2.7.0'
         ####### AWS Frameworks - End Copy ########
 
