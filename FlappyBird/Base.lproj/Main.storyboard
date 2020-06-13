@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cma-yN-qQI">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="FlappyBird" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameViewController" id="BV1-FR-VrT" customClass="GameViewController" customModule="FlappyBird" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="maK-i9-Uhn"/>
                         <viewControllerLayoutGuide type="bottom" id="khH-OB-KpY"/>
@@ -25,6 +23,84 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1076" y="133.5832083958021"/>
+        </scene>
+        <!--Starting View Controller-->
+        <scene sceneID="jRR-ZQ-Ex5">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RRh-ZX-i9T" sceneMemberID="firstResponder"/>
+                <viewController id="jg2-m3-R0V" customClass="StartingViewController" customModule="FlappyBird" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="laD-8l-EFi"/>
+                        <viewControllerLayoutGuide type="bottom" id="i57-4I-FCR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="msw-IA-3Lr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flappy" translatesAutoresizingMaskIntoConstraints="NO" id="FTH-g9-dAI">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB3-rR-3JU">
+                                <rect key="frame" x="157.5" y="312.5" width="60" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="Tyb-gV-tbU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="Start">
+                                    <color key="titleColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTap" destination="jg2-m3-R0V" eventType="touchUpInside" id="ozq-x0-idA"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome To Flappy Bird" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d5H-6Q-Rwk">
+                                <rect key="frame" x="95.5" y="84" width="184" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="sB3-rR-3JU" firstAttribute="centerX" secondItem="msw-IA-3Lr" secondAttribute="centerX" id="CTm-IX-5NT"/>
+                            <constraint firstItem="sB3-rR-3JU" firstAttribute="centerY" secondItem="msw-IA-3Lr" secondAttribute="centerY" id="FcC-pk-IFs"/>
+                            <constraint firstItem="d5H-6Q-Rwk" firstAttribute="top" secondItem="laD-8l-EFi" secondAttribute="bottom" constant="40" id="Pz0-6V-PuV"/>
+                            <constraint firstItem="FTH-g9-dAI" firstAttribute="leading" secondItem="msw-IA-3Lr" secondAttribute="leading" id="dw0-Da-rhW"/>
+                            <constraint firstItem="d5H-6Q-Rwk" firstAttribute="centerX" secondItem="msw-IA-3Lr" secondAttribute="centerX" id="kQv-ad-3sm"/>
+                            <constraint firstItem="i57-4I-FCR" firstAttribute="top" secondItem="FTH-g9-dAI" secondAttribute="bottom" id="nxt-XP-WwX"/>
+                            <constraint firstAttribute="trailing" secondItem="FTH-g9-dAI" secondAttribute="trailing" id="olO-De-Kyc"/>
+                            <constraint firstItem="FTH-g9-dAI" firstAttribute="top" secondItem="msw-IA-3Lr" secondAttribute="top" id="p47-uC-Cvi"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="hUD-xH-2PJ"/>
+                    <connections>
+                        <outlet property="startButton" destination="sB3-rR-3JU" id="Fkw-WP-906"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1076" y="133.5832083958021"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="U3K-4T-DwH">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cma-yN-qQI" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="mRb-jY-wlR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="jg2-m3-R0V" kind="relationship" relationship="rootViewController" id="PiF-9q-D1p"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SdR-Ck-k2m" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="flappy" width="500" height="750"/>
+    </resources>
 </document>
