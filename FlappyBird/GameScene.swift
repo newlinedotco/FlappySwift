@@ -9,7 +9,10 @@
 import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
-    let verticalPipeGap = 150.0
+    //remotely configurable variables
+    var verticalPipeGap = 200.0
+    var gravity:Double = 4
+    var gameSpeed: CGFloat = 100
     
     var bird:SKSpriteNode!
     var skyColor:SKColor!
@@ -32,7 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         canRestart = true
         
         // setup physics
-        self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -5.0 )
+        self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -gravity )
         self.physicsWorld.contactDelegate = self
         
         // setup background color
@@ -85,18 +88,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         pipeTextureDown = SKTexture(imageNamed: "PipeDown")
         pipeTextureDown.filteringMode = .nearest
         
-        // create the pipes movement actions
-        let distanceToMove = CGFloat(self.frame.size.width + 2.0 * pipeTextureUp.size().width)
-        let movePipes = SKAction.moveBy(x: -distanceToMove, y:0.0, duration:TimeInterval(0.01 * distanceToMove))
-        let removePipes = SKAction.removeFromParent()
-        movePipesAndRemove = SKAction.sequence([movePipes, removePipes])
-        
-        // spawn the pipes
-        let spawn = SKAction.run(spawnPipes)
-        let delay = SKAction.wait(forDuration: TimeInterval(2.0))
-        let spawnThenDelay = SKAction.sequence([spawn, delay])
-        let spawnThenDelayForever = SKAction.repeatForever(spawnThenDelay)
-        self.run(spawnThenDelayForever)
+        resetPipes()
+        startNewPipes()
         
         // setup our bird
         let birdTexture1 = SKTexture(imageNamed: "bird-01")
@@ -151,7 +144,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let pipeDown = SKSpriteNode(texture: pipeTextureDown)
         pipeDown.setScale(2.0)
-        pipeDown.position = CGPoint(x: 0.0, y: y + Double(pipeDown.size.height) + verticalPipeGap)
+        pipeDown.position = CGPoint(x: 0.0, y: y + Double(pipeDown.size.height) + self.verticalPipeGap)
         
         
         pipeDown.physicsBody = SKPhysicsBody(rectangleOf: pipeDown.size)
@@ -178,9 +171,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         contactNode.physicsBody?.contactTestBitMask = birdCategory
         pipePair.addChild(contactNode)
         
-        pipePair.run(movePipesAndRemove)
+        pipePair.run(movePipesAndRemove, withKey: "movePipesAndRemove")
         pipes.addChild(pipePair)
         
+    }
+
+       func resetPipes() {
+        // create the pipes movement actions
+        let distanceToMove = CGFloat(self.frame.size.width + 2.0 * pipeTextureUp.size().width)
+        let movePipes = SKAction.moveBy(x: -distanceToMove, y:0.0, duration:TimeInterval((1/self.gameSpeed) * distanceToMove))
+        let removePipes = SKAction.removeFromParent()
+        self.movePipesAndRemove = SKAction.sequence([movePipes, removePipes])
+    }
+    
+    func startNewPipes() {
+        let spawn = SKAction.run(spawnPipes)
+        let delay = SKAction.wait(forDuration: TimeInterval(2.0))
+        let spawnThenDelay = SKAction.sequence([spawn, delay])
+        let spawnThenDelayForever = SKAction.repeatForever(spawnThenDelay)
+        self.run(spawnThenDelayForever, withKey: "spawnThenDelayForever")
     }
     
     func resetScene (){
