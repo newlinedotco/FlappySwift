@@ -195,6 +195,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     }
     
     func resetScene (){
+        
+        // Remove all existing pipes
+        pipes.removeAllChildren()
+        let userId = "user123"
+      
+        let enabled = self.appDelegate!.optimizely.isFeatureEnabled(featureKey: "remoteConfig", userId: userId)
+    
+        if enabled {
+            print("remoteConfig feature enabled!!")
+          
+        do {
+            let remoteConfigGameSpeed = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "gameSpeed", userId: userId)
+            let remoteConfigPipeGap = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "pipeGap", userId: userId)
+            let remoteConfigGravity = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "gravity", userId: userId)
+
+            self.gameSpeed = CGFloat(remoteConfigGameSpeed)
+            self.verticalPipeGap = Double(remoteConfigPipeGap)
+            self.gravity = Double(remoteConfigGravity)
+            self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -self.gravity )
+
+            print("self.gameSpeed: \(self.gameSpeed)")
+            print("self.verticalPipeGap: \(self.verticalPipeGap)")
+            print("self.gravity: \(self.gravity)")
+              
+          } catch {
+            print("error getting feature variable from optimizely: \(error)")
+          }
+          resetPipes()
+          startNewPipes()
+      } else {
+          print("remoteConfig feature NOT enabled")
+      }
+
+        
         // Move bird to original position and reset velocity
         bird.position = CGPoint(x: self.frame.size.width / 2.5, y: self.frame.midY)
         bird.physicsBody?.velocity = CGVector( dx: 0, dy: 0 )
@@ -202,8 +236,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bird.speed = 1.0
         bird.zRotation = 0.0
         
-        // Remove all existing pipes
-        pipes.removeAllChildren()
+      
         
         // Reset _canRestart
         canRestart = false
