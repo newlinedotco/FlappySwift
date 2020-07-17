@@ -9,6 +9,8 @@
 import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
+    var appDelegate: AppDelegate?
+    
     //remotely configurable variables
     var verticalPipeGap = 200.0
     var gravity:Double = 4

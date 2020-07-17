@@ -7,17 +7,29 @@
 //
 
 import UIKit
+import Optimizely
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-                            
-    var window: UIWindow?
-
+     var window: UIWindow?
+    
+    // Build OptimizelyClient -> REPLACE_WITH_SDK_KEY
+    let optimizely = OptimizelyClient(sdkKey: "REPLACE_WITH_SDK_KEY", periodicDownloadInterval: 30)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        optimizely.start { result in
+            switch result {
+            case .failure(let error):
+             print("Optimizely SDK initiliazation failed: \(error)")
+            case .success:
+             print("Optimizely SDK initialized successfully!")
+            }
+        }
+        
         return true
     }
+
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
