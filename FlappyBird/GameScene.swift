@@ -199,16 +199,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         // Remove all existing pipes
         pipes.removeAllChildren()
         let userId = "user123"
+        let attributes: [String: Any] = [
+          "gamePhysicsDifficulty": "hard"
+        ]
       
-        let enabled = self.appDelegate!.optimizely.isFeatureEnabled(featureKey: "remoteConfig", userId: userId)
+        let enabled = self.appDelegate!.optimizely.isFeatureEnabled(featureKey: "remoteConfig", userId: userId, attributes: attributes)
     
         if enabled {
             print("remoteConfig feature enabled!!")
           
         do {
-            let remoteConfigGameSpeed = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "gameSpeed", userId: userId)
-            let remoteConfigPipeGap = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "pipeGap", userId: userId)
-            let remoteConfigGravity = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "gravity", userId: userId)
+            let remoteConfigGameSpeed = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "gameSpeed", userId: userId, attributes: attributes)
+            let remoteConfigPipeGap = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "pipeGap", userId: userId, attributes: attributes)
+            let remoteConfigGravity = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "gravity", userId: userId, attributes: attributes)
 
             self.gameSpeed = CGFloat(remoteConfigGameSpeed)
             self.verticalPipeGap = Double(remoteConfigPipeGap)
