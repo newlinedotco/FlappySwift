@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      var window: UIWindow?
     
     // Build OptimizelyClient -> REPLACE_WITH_SDK_KEY
-    let optimizely = OptimizelyClient(sdkKey: "REPLACE_WITH_SDK_KEY", periodicDownloadInterval: 30)
+    let optimizely = OptimizelyClient(sdkKey: "X7B2oLeGUPJ415zWrW81F3", periodicDownloadInterval: 5)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
