@@ -30,6 +30,8 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
+    
+    let delegate = UIApplication.shared.delegate as! AppDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,9 @@ class GameViewController: UIViewController {
             
             /* Set the scale mode to scale to fit the window */
             scene.scaleMode = .aspectFill
+            
+            //attach delegate to scene from linked AppDelegate above
+            scene.appDelegate = delegate
             
             skView.presentScene(scene)
         }

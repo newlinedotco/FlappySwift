@@ -9,7 +9,12 @@
 import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
-    let verticalPipeGap = 150.0
+    var appDelegate: AppDelegate?
+    
+    //remotely configurable variables
+    var verticalPipeGap = 200.0
+    var gravity:Double = 4
+    var gameSpeed: CGFloat = 100
     
     var bird:SKSpriteNode!
     var skyColor:SKColor!
@@ -32,7 +37,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         canRestart = true
         
         // setup physics
-        self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -5.0 )
+        self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -gravity )
         self.physicsWorld.contactDelegate = self
         
         // setup background color
@@ -85,18 +90,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         pipeTextureDown = SKTexture(imageNamed: "PipeDown")
         pipeTextureDown.filteringMode = .nearest
         
-        // create the pipes movement actions
-        let distanceToMove = CGFloat(self.frame.size.width + 2.0 * pipeTextureUp.size().width)
-        let movePipes = SKAction.moveBy(x: -distanceToMove, y:0.0, duration:TimeInterval(0.01 * distanceToMove))
-        let removePipes = SKAction.removeFromParent()
-        movePipesAndRemove = SKAction.sequence([movePipes, removePipes])
-        
-        // spawn the pipes
-        let spawn = SKAction.run(spawnPipes)
-        let delay = SKAction.wait(forDuration: TimeInterval(2.0))
-        let spawnThenDelay = SKAction.sequence([spawn, delay])
-        let spawnThenDelayForever = SKAction.repeatForever(spawnThenDelay)
-        self.run(spawnThenDelayForever)
+        resetPipes()
+        startNewPipes()
         
         // setup our bird
         let birdTexture1 = SKTexture(imageNamed: "bird-01")
@@ -151,7 +146,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let pipeDown = SKSpriteNode(texture: pipeTextureDown)
         pipeDown.setScale(2.0)
-        pipeDown.position = CGPoint(x: 0.0, y: y + Double(pipeDown.size.height) + verticalPipeGap)
+        pipeDown.position = CGPoint(x: 0.0, y: y + Double(pipeDown.size.height) + self.verticalPipeGap)
         
         
         pipeDown.physicsBody = SKPhysicsBody(rectangleOf: pipeDown.size)
@@ -178,12 +173,65 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         contactNode.physicsBody?.contactTestBitMask = birdCategory
         pipePair.addChild(contactNode)
         
-        pipePair.run(movePipesAndRemove)
+        pipePair.run(movePipesAndRemove, withKey: "movePipesAndRemove")
         pipes.addChild(pipePair)
         
     }
+
+       func resetPipes() {
+        // create the pipes movement actions
+        let distanceToMove = CGFloat(self.frame.size.width + 2.0 * pipeTextureUp.size().width)
+        let movePipes = SKAction.moveBy(x: -distanceToMove, y:0.0, duration:TimeInterval((1/self.gameSpeed) * distanceToMove))
+        let removePipes = SKAction.removeFromParent()
+        self.movePipesAndRemove = SKAction.sequence([movePipes, removePipes])
+    }
+    
+    func startNewPipes() {
+        let spawn = SKAction.run(spawnPipes)
+        let delay = SKAction.wait(forDuration: TimeInterval(2.0))
+        let spawnThenDelay = SKAction.sequence([spawn, delay])
+        let spawnThenDelayForever = SKAction.repeatForever(spawnThenDelay)
+        self.run(spawnThenDelayForever, withKey: "spawnThenDelayForever")
+    }
     
     func resetScene (){
+        
+        // Remove all existing pipes
+        pipes.removeAllChildren()
+        let userId = "user123"
+        let attributes: [String: Any] = [
+          "gamePhysicsDifficulty": "hard"
+        ]
+      
+        let enabled = self.appDelegate!.optimizely.isFeatureEnabled(featureKey: "remoteConfig", userId: userId, attributes: attributes)
+    
+        if enabled {
+            print("remoteConfig feature enabled!!")
+          
+        do {
+            let remoteConfigGameSpeed = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "gameSpeed", userId: userId, attributes: attributes)
+            let remoteConfigPipeGap = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "pipeGap", userId: userId, attributes: attributes)
+            let remoteConfigGravity = try self.appDelegate!.optimizely.getFeatureVariableInteger(featureKey: "remoteConfig", variableKey: "gravity", userId: userId, attributes: attributes)
+
+            self.gameSpeed = CGFloat(remoteConfigGameSpeed)
+            self.verticalPipeGap = Double(remoteConfigPipeGap)
+            self.gravity = Double(remoteConfigGravity)
+            self.physicsWorld.gravity = CGVector( dx: 0.0, dy: -self.gravity )
+
+            print("self.gameSpeed: \(self.gameSpeed)")
+            print("self.verticalPipeGap: \(self.verticalPipeGap)")
+            print("self.gravity: \(self.gravity)")
+              
+          } catch {
+            print("error getting feature variable from optimizely: \(error)")
+          }
+          resetPipes()
+          startNewPipes()
+      } else {
+          print("remoteConfig feature NOT enabled")
+      }
+
+        
         // Move bird to original position and reset velocity
         bird.position = CGPoint(x: self.frame.size.width / 2.5, y: self.frame.midY)
         bird.physicsBody?.velocity = CGVector( dx: 0, dy: 0 )
@@ -191,8 +239,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bird.speed = 1.0
         bird.zRotation = 0.0
         
-        // Remove all existing pipes
-        pipes.removeAllChildren()
+      
         
         // Reset _canRestart
         canRestart = false
