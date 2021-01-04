@@ -9,8 +9,8 @@
 import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate{
-    let verticalPipeGap = 150.0
-    
+    var verticalPipeGap = 200.0
+    var level:Int = 0
     var bird:SKSpriteNode!
     var skyColor:SKColor!
     var pipeTextureUp:SKTexture!
@@ -21,7 +21,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
     var canRestart = Bool()
     var scoreLabelNode:SKLabelNode!
     var score = NSInteger()
-    
+    var stageScore:Int = 0;
+    var levelLabelNode:SKLabelNode!;
     let birdCategory: UInt32 = 1 << 0
     let worldCategory: UInt32 = 1 << 1
     let pipeCategory: UInt32 = 1 << 2
@@ -137,7 +138,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         scoreLabelNode.position = CGPoint( x: self.frame.midX, y: 3 * self.frame.size.height / 4 )
         scoreLabelNode.zPosition = 100
         scoreLabelNode.text = String(score)
+        
+        levelLabelNode = SKLabelNode(fontNamed:"MarkerFelt-Wide")
+        levelLabelNode.position = CGPoint( x: self.frame.midX, y: 1 * self.frame.size.height / 4 )
+        levelLabelNode.zPosition = 10
+        levelLabelNode.text = "lvl:" + String(stageScore)
         self.addChild(scoreLabelNode)
+        self.addChild(levelLabelNode)
         
     }
     
@@ -199,11 +206,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         // Reset score
         score = 0
+        stageScore = 0
         scoreLabelNode.text = String(score)
-        
+        levelLabelNode.text = "lvl:" + String(stageScore)
+        verticalPipeGap = 200.0
+            
         // Restart animation
         moving.speed = 1
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if moving.speed > 0  {
             for _ in touches { // do we need all touches?
@@ -227,6 +238,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
                 // Bird has contact with score entity
                 score += 1
                 scoreLabelNode.text = String(score)
+                //Update level and diffeculty
+                if score == stageScore + 8{
+                    stageScore += 8
+                    levelLabelNode.text = "lvl:" + String(stageScore/8)
+                    speed += 0.1
+                    verticalPipeGap = verticalPipeGap - 20.0
+                }
                 
                 // Add a little visual feedback for the score increment
                 scoreLabelNode.run(SKAction.sequence([SKAction.scale(to: 1.5, duration:TimeInterval(0.1)), SKAction.scale(to: 1.0, duration:TimeInterval(0.1))]))
