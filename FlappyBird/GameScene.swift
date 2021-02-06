@@ -151,8 +151,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         
         let pipeDown = SKSpriteNode(texture: pipeTextureDown)
         pipeDown.setScale(2.0)
-        pipeDown.position = CGPoint(x: 0.0, y: y + Double(pipeDown.size.height) + verticalPipeGap)
-        
+        pipeDown.position = CGPoint(x: 0.0, y: y + 4160.0 + verticalPipeGap)
         
         pipeDown.physicsBody = SKPhysicsBody(rectangleOf: pipeDown.size)
         pipeDown.physicsBody?.isDynamic = false
