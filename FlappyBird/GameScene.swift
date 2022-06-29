@@ -113,7 +113,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bird.run(flap)
         
         
-        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 2.0)
+        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 1.6)
         bird.physicsBody?.isDynamic = true
         bird.physicsBody?.allowsRotation = false
         
