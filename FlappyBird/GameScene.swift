@@ -74,7 +74,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
             let sprite = SKSpriteNode(texture: skyTexture)
             sprite.setScale(2.0)
             sprite.zPosition = -20
-            sprite.position = CGPoint(x: i * sprite.size.width, y: sprite.size.height / 2.0 + groundTexture.size().height * 1.6)
+            sprite.position = CGPoint(x: i * sprite.size.width, y: sprite.size.height / 2.0 + groundTexture.size().height * 2.0)
             sprite.run(moveSkySpritesForever)
             moving.addChild(sprite)
         }
@@ -113,7 +113,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         bird.run(flap)
         
         
-        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 2.0)
+        bird.physicsBody = SKPhysicsBody(circleOfRadius: bird.size.height / 1.6)
         bird.physicsBody?.isDynamic = true
         bird.physicsBody?.allowsRotation = false
         
