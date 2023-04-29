@@ -131,6 +131,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate{
         ground.physicsBody?.categoryBitMask = worldCategory
         self.addChild(ground)
         
+        //create top Boundary
+        let topBoundary = SKNode()
+        topBoundary.position = CGPoint(x: 0, y: frame.maxY)
+        topBoundary.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: self.frame.size.width, height: groundTexture.size().height))
+        topBoundary.physicsBody?.isDynamic = false
+        topBoundary.physicsBody?.categoryBitMask = worldCategory
+        self.addChild(topBoundary)
+        
         // Initialize label and create a label which holds the score
         score = 0
         scoreLabelNode = SKLabelNode(fontNamed:"MarkerFelt-Wide")
